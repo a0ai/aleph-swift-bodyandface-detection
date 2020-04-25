@@ -56,13 +56,13 @@ class FaceDetectionViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    loadCamera()
-    /*configureCaptureSession(campos: AVCaptureDevice.Position.front)
-    laserView.isHidden = true
     maxX = view.bounds.maxX
     midY = view.bounds.midY
     maxY = view.bounds.maxY
-    session.startRunning()*/
+    loadCamera()
+    /*configureCaptureSession(campos: AVCaptureDevice.Position.front)
+    laserView.isHidden = true*/
+    
   }
   
   
@@ -173,16 +173,20 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
     }
 
     // 2
-    let detectFaceRequest = VNDetectFaceLandmarksRequest(completionHandler: detectedFace)
+    if faceDetection {
 
-    // 3
-    do {
-      try sequenceHandler.perform(
-        [detectFaceRequest],
-        on: imageBuffer,
-        orientation: .leftMirrored)
-    } catch {
-      print(error.localizedDescription)
+      let detectFaceRequest = VNDetectFaceLandmarksRequest(completionHandler: detectedFace)
+      do {
+        try sequenceHandler.perform([detectFaceRequest], on: imageBuffer, orientation: .leftMirrored)
+      } catch { print(error.localizedDescription) }
+
+    } else {
+      
+      let detectBodyRequest = VNDetectHumanRectanglesRequest(completionHandler: detectedBody)
+      do {
+        try sequenceHandler.perform([detectBodyRequest], on: imageBuffer, orientation: .leftMirrored)
+      } catch { print(error.localizedDescription) }
+    
     }
   }
 }
@@ -333,7 +337,9 @@ extension FaceDetectionViewController {
       self.laserView.setNeedsDisplay()
     }
   }
-
+  func detectedBody(request: VNRequest, error: Error?) {
+    
+  }
   func detectedFace(request: VNRequest, error: Error?) {
     // 1
     guard
@@ -346,9 +352,9 @@ extension FaceDetectionViewController {
     }
 
     if faceDetection {
-      updateLaserView(for: result)
-    } else {
       updateFaceView(for: result)
+    } else {
+      updateLaserView(for: result)
     }
   }
 }
