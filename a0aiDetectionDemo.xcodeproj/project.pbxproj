@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5394F02521864DF5006E754C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5394F02321864DF4006E754C /* LaunchScreen.storyboard */; };
+		1CEB1E922457D9FA00790B85 /* a0Launcher.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CEB1E912457D9FA00790B85 /* a0Launcher.storyboard */; };
 		9FE0FDF721F66CBE002F945C /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE0FDF621F66CBE002F945C /* UIViewExtension.swift */; };
 		9FE158AF21E836510090DA43 /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE158AE21E836510090DA43 /* FaceDetectionViewController.swift */; };
 		9FE158B821E850020090DA43 /* LaserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE158B721E850020090DA43 /* LaserView.swift */; };
@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5394F02421864DF4006E754C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1CEB1E912457D9FA00790B85 /* a0Launcher.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = a0Launcher.storyboard; sourceTree = "<group>"; };
 		9FE0FDF621F66CBE002F945C /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		9FE158AE21E836510090DA43 /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
 		9FE158B721E850020090DA43 /* LaserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserView.swift; sourceTree = "<group>"; };
@@ -75,13 +75,13 @@
 			children = (
 				9FE0FDF821F66E0F002F945C /* Extensions */,
 				D2A5F2201F4A96D0005CD714 /* AppDelegate.swift */,
-				9FE158AE21E836510090DA43 /* FaceDetectionViewController.swift */,
 				9FE158BB21EA371C0090DA43 /* FaceView.swift */,
+				9FE158AE21E836510090DA43 /* FaceDetectionViewController.swift */,
 				9FE158B721E850020090DA43 /* LaserView.swift */,
 				D2A5F2071F4A9144005CD714 /* Main.storyboard */,
-				5394F02321864DF4006E754C /* LaunchScreen.storyboard */,
 				D2A5F20A1F4A9144005CD714 /* Assets.xcassets */,
 				D2A5F20F1F4A9144005CD714 /* Info.plist */,
+				1CEB1E912457D9FA00790B85 /* a0Launcher.storyboard */,
 			);
 			path = FaceLasers;
 			sourceTree = "<group>";
@@ -145,8 +145,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5394F02521864DF5006E754C /* LaunchScreen.storyboard in Resources */,
 				D2A5F20B1F4A9144005CD714 /* Assets.xcassets in Resources */,
+				1CEB1E922457D9FA00790B85 /* a0Launcher.storyboard in Resources */,
 				D2A5F2091F4A9144005CD714 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,14 +170,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		5394F02321864DF4006E754C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5394F02421864DF4006E754C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		D2A5F2071F4A9144005CD714 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -317,7 +309,7 @@
 				PRODUCT_NAME = a0aiDetectionDemo;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -336,7 +328,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.a0ai.detectiondemo;
 				PRODUCT_NAME = a0aiDetectionDemo;
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

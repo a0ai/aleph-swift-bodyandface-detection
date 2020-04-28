@@ -56,9 +56,9 @@ class FaceDetectionViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    maxX = view.bounds.maxX
+    /*maxX = view.bounds.maxX
     midY = view.bounds.midY
-    maxY = view.bounds.maxY
+    maxY = view.bounds.maxY*/
     loadCamera()
     /*configureCaptureSession(campos: AVCaptureDevice.Position.front)
     laserView.isHidden = true*/

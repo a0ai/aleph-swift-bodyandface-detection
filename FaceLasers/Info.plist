@@ -23,7 +23,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Needs camera</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>a0Launcher</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
