@@ -12,6 +12,7 @@ class FaceView: UIView {
   var faceContour: [CGPoint] = []
 
   var boundingBox = CGRect.zero
+  var diagonal: [CGPoint] = []
   
   func clear() {
     leftEye = []
@@ -43,13 +44,24 @@ class FaceView: UIView {
     defer {
       context.restoreGState()
     }
-
+    
+    
+    UIColor.blue.setStroke()
+    
+    let topleftPoint = CGPoint(x:floor(boundingBox.origin.x), y:floor(boundingBox.origin.y))
+    let topleftstring = NSCoder.string(for: topleftPoint)
+    let font = UIFont.systemFont(ofSize: 12)
+    let string = NSAttributedString(string: topleftstring, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.green])
+    string.draw(at: boundingBox.origin)
+    
+    
     // 4
     context.addRect(boundingBox)
 
+    
+    
     // 5
     UIColor.red.setStroke()
-
     // 6
     context.strokePath()
 
@@ -57,14 +69,16 @@ class FaceView: UIView {
     UIColor.white.setStroke()
 
     if !leftEye.isEmpty {
-      // 2
+      
       context.addLines(between: leftEye)
-
-      // 3
       context.closePath()
-
-      // 4
+      let leftEyeBox = context.boundingBoxOfPath
       context.strokePath()
+      
+      let topleftEyePoint = CGPoint(x:floor(leftEyeBox.origin.x), y:floor(leftEyeBox.origin.y))
+      let topleftEyeString = NSCoder.string(for: topleftEyePoint)
+      let string = NSAttributedString(string: topleftEyeString, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.green])
+      string.draw(at: leftEyeBox.origin)
     }
 
     if !rightEye.isEmpty {

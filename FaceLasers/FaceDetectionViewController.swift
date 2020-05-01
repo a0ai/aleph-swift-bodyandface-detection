@@ -92,7 +92,8 @@ extension FaceDetectionViewController{
     if previewLayer == nil {
       previewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
       previewLayer.videoGravity = .resizeAspectFill
-      previewLayer.frame = view.bounds
+      let previewBounds = view.bounds
+      previewLayer.frame = previewBounds
       view.layer.insertSublayer(previewLayer, at: 0)
     }
   }
@@ -165,25 +166,33 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
   }
 }
 
+func swapxy<swapType>( _ a: inout swapType, _ b: inout swapType) {
+  (a, b) = (b, a)
+}
+
 extension FaceDetectionViewController {
-  func convert(rect: CGRect) -> CGRect {
+  
+  func convert(_ rect: inout CGRect) {
     // 1
-    let origin = previewLayer.layerPointConverted(fromCaptureDevicePoint: rect.origin)
-
-    // 2
-    let size = previewLayer.layerPointConverted(fromCaptureDevicePoint: rect.size.cgPoint)
-
-    // 3
-    return CGRect(origin: origin, size: size.cgSize)
+    let pvwLyrBnds = previewLayer.bounds
+    //rect.origin.y = 1 - rect.origin.y
+    rect.origin.x *= pvwLyrBnds.size.width
+    rect.origin.y = 1 - rect.origin.y - rect.size.height
+    rect.origin.y *= pvwLyrBnds.size.height
+    rect.size.width *= pvwLyrBnds.size.width
+    rect.size.height *= pvwLyrBnds.size.height
+    
   }
 
   // 1
   func landmark(point: CGPoint, to rect: CGRect) -> CGPoint {
     // 2
     let absolute = point.absolutePoint(in: rect)
-
+    var apoint = absolute
+    swapxy(&apoint.x, &apoint.y)
+    apoint.x = 1.0 - apoint.x
     // 3
-    let converted = previewLayer.layerPointConverted(fromCaptureDevicePoint: absolute)
+    let converted = previewLayer.layerPointConverted(fromCaptureDevicePoint: apoint)
 
     // 4
     return converted
@@ -194,7 +203,10 @@ extension FaceDetectionViewController {
       return nil
     }
 
-    return points.compactMap { landmark(point: $0, to: rect) }
+    return points.compactMap {
+      landmark(point: $0, to: rect)
+      
+    }
   }
   
   func updateFaceView(for result: VNFaceObservation) {
@@ -204,9 +216,10 @@ extension FaceDetectionViewController {
       }
     }
 
-    let box = result.boundingBox
-    faceView.boundingBox = convert(rect: box)
-
+    var box = result.boundingBox
+    convert(&box)
+    faceView.boundingBox = box
+    
     guard let landmarks = result.landmarks else {
       return
     }
