@@ -8,7 +8,7 @@ class FaceDetectionViewController: UIViewController {
   var sequenceHandler = VNSequenceRequestHandler()
 
   @IBOutlet var faceView: FaceView!
-  @IBOutlet var laserView: LaserView!
+  @IBOutlet var bodyView: BodyView!
   @IBOutlet var faceBodyLabel: UILabel!
   
   var captureSession: AVCaptureSession?
@@ -160,7 +160,10 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
       let detectBodyRequest = VNDetectHumanRectanglesRequest(completionHandler: detectedBody)
       do {
         try sequenceHandler.perform([detectBodyRequest], on: imageBuffer, orientation: .leftMirrored)
-      } catch { print(error.localizedDescription) }
+      } catch {
+        print(error.localizedDescription)
+        
+      }
     
     }
   }
@@ -274,58 +277,30 @@ extension FaceDetectionViewController {
   }
 
   // 1
-  func updateLaserView(for result: VNFaceObservation) {
-    // 2
-    laserView.clear()
-
-    // 3
-    let yaw = result.yaw ?? 0.0
-
-    // 4
-    if yaw == 0.0 {
-      return
-    }
-
-    // 5
-    var origins: [CGPoint] = []
+  func updateBodyView(for result: VNRectangleObservation) {
 
     // 6
-    if let point = result.landmarks?.leftPupil?.normalizedPoints.first {
-      let origin = landmark(point: point, to: result.boundingBox)
-      origins.append(origin)
+    defer{
+      DispatchQueue.main.async {
+        self.bodyView.setNeedsDisplay()
+      }
     }
-
-    // 7
-    if let point = result.landmarks?.rightPupil?.normalizedPoints.first {
-      let origin = landmark(point: point, to: result.boundingBox)
-      origins.append(origin)
-    }
-
-    // 1
-    let avgY = origins.map { $0.y }.reduce(0.0, +) / CGFloat(origins.count)
-
-    // 2
-    let focusY = (avgY < midY) ? 0.75 * maxY : 0.25 * maxY
-
-    // 3
-    let focusX = (yaw.doubleValue < 0.0) ? -100.0 : maxX + 100.0
-
-    // 4
-    let focus = CGPoint(x: focusX, y: focusY)
-
-    // 5
-    for origin in origins {
-      let laser = Laser(origin: origin, focus: focus)
-      laserView.add(laser: laser)
-    }
-
-    // 6
-    DispatchQueue.main.async {
-      self.laserView.setNeedsDisplay()
-    }
-  }
-  func detectedBody(request: VNRequest, error: Error?) {
+    self.bodyView.bodyRect = result.boundingBox
     
+  }
+  
+  func detectedBody(request: VNRequest, error: Error?) {
+    // 1
+    guard
+      let results = request.results as? [VNRectangleObservation],
+      let result = results.first
+      else {
+        // 2
+        faceView.clear()
+        return
+    }
+    updateBodyView(for: result)
+
   }
   func detectedFace(request: VNRequest, error: Error?) {
     // 1
@@ -338,10 +313,7 @@ extension FaceDetectionViewController {
         return
     }
 
-    if faceDetection {
-      updateFaceView(for: result)
-    } else {
-      updateLaserView(for: result)
-    }
+    updateFaceView(for: result)
+    
   }
 }
