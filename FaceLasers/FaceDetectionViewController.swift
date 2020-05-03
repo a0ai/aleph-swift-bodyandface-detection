@@ -103,6 +103,7 @@ extension FaceDetectionViewController{
 
 extension FaceDetectionViewController {
   @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
+    /*
     faceDetection = !faceDetection
     print("Face Detection: ",faceDetection)
     if faceDetection {
@@ -110,7 +111,7 @@ extension FaceDetectionViewController {
     } else {
       faceBodyLabel.text = "Body"
     }
-    loadCamera()
+    loadCamera()*/
   }
 }
 
